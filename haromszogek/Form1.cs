@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
 
 namespace haromszogek
 {
@@ -86,6 +87,18 @@ namespace haromszogek
         {
             lbHaromszogLista.Items.Clear();
             ofdMegnyitas.ShowDialog();
+
+            OpenFileDialog odf = new OpenFileDialog();
+
+            if (odf.ShowDialog() == DialogResult.OK)
+            {
+                string s = File.ReadAllText(odf.FileName);
+                lbHaromszogLista.Text = s;
+            }
+            //string path = @"C:\Users\dani2\source\repos\haromszogekForm\haromszogek\bin\Debug";
+            //StreamReader stream = new StreamReader("adatok.txt");
+            //string filedata = stream.ReadToEnd();
+            //lbHaromszogLista.Text = filedata.ToString();
         }
     }
 }
