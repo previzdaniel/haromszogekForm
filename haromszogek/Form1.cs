@@ -86,15 +86,51 @@ namespace haromszogek
         private void btnFajlbol_Click(object sender, EventArgs e)
         {
             lbHaromszogLista.Items.Clear();
-            ofdMegnyitas.ShowDialog();
-
-            OpenFileDialog odf = new OpenFileDialog();
-
-            if (odf.ShowDialog() == DialogResult.OK)
+            
+            if (ofdMegnyitas.ShowDialog() == DialogResult.OK)
             {
-                string s = File.ReadAllText(odf.FileName);
-                lbHaromszogLista.Text = s;
+                try
+                {
+                    StreamReader file = new StreamReader(ofdMegnyitas.FileName);
+                    try
+                    {
+                        while (!file.EndOfStream)
+                        {
+                            string sor = file.ReadLine();
+                            var h = new Haromszog(sor);
+
+                            lbHaromszogLista.Items.Add("Fájlból olvasás");
+                            foreach (var a in h.AdatokSzoveg())
+                            {
+                               lbHaromszogLista.Items.Add(a);
+                            }
+                            lbHaromszogLista.Items.Add("----------------------------------------");
+                        }
+                        file.Close();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
+                    finally
+                    {
+                        file.Close();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
             }
+
+
+            //OpenFileDialog odf = new OpenFileDialog();
+
+            //if (odf.ShowDialog() == DialogResult.OK)
+            //{
+            //    string s = File.ReadAllText(odf.FileName);
+            //    lbHaromszogLista.Text = s;
+            //}
             //string path = @"C:\Users\dani2\source\repos\haromszogekForm\haromszogek\bin\Debug";
             //StreamReader stream = new StreamReader("adatok.txt");
             //string filedata = stream.ReadToEnd();
